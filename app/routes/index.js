@@ -1,7 +1,7 @@
 
 
 const Routes = [
-    // ...require('./testRoutes'),
-    ...require('./userRoutes')
+    ...require('./v1/authRoutes'),
+    ...require('./v1/userRoutes')
 ]
 module.exports = Routes;

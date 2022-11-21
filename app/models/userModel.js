@@ -20,8 +20,8 @@ const userSchema = new Schema({
     mobile: { type: String, index: true },
     dob: { type: Date },
     status: { type: Number },
-    // gender: { type: String, enum: object.values(GENDER)},
-    isActive: { type: Boolean, default: false },
+    gender: { type: String, enum: Object.values(GENDER)},
+    isActive: { type: Boolean, default: true },
     createdBy: { type: Schema.Types.ObjectId, ref: 'user' },
     updatedBy: { type: Schema.Types.ObjectId, ref: 'user' },
 }, { timestamps: true, versionKey: false, collection: 'users' });

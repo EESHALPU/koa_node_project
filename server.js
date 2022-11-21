@@ -6,12 +6,11 @@ const KoaBodyParser = require('koa-bodyparser');
 const userController = require('./app/controllers/userController')
 const Routes = require('./app/routes/index')
 const { compareHash, encryptJwt, decryptJwt, hashPassword }  = require('./app/utils/utils')
-const PORT =3000
 const app = new Koa();
 const router = new Router();
 app.use(KoaBodyParser())
 
-router.get('/test',(ctx)=>{
+router.get('/',(ctx)=>{
     ctx.body={message:'Server is working'}
 })
 
