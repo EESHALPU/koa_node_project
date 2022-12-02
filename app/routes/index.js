@@ -1,7 +1,8 @@
+const KoaRouter = require('koa-router')
+const auth = require('./v1/authRoutes')
 
+const router = new KoaRouter()
+// router.use(home)
+router.use(auth)
 
-const Routes = [
-    ...require('./v1/authRoutes'),
-    ...require('./v1/userRoutes')
-]
-module.exports = Routes;
+module.exports = router

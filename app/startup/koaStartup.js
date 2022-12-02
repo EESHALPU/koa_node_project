@@ -4,14 +4,16 @@ const dbMigrations = require("../utils/dbMigrations");
 // const routes = require('../routes');
 // const routeUtils = require('../utils/routeUtils');
 // const { log} = require('../utils/utils');
+const Koa = require('koa')
+const dotenv = require('dotenv').config();
+const CONFIG = require('../../config')
 
 
-module.exports = async function (app) {
 
-    // app.use(require("body-parser").json({ limit: '50mb' }));
-    // app.use(require("body-parser").urlencoded({ limit: '50mb', extended: true }));
+const app = new Koa();
+app.listen(process.env.SERVER_PORT,()=>{console.log(`Server is running at http://localhost:${process.env.SERVER_PORT}`)})
 
-
+module.exports = async function (app) {    
     /** middleware for each api call to logging**/
     // app.use((req, res, next) => {
     //     const start = process.hrtime.bigint();
@@ -37,16 +39,9 @@ module.exports = async function (app) {
     //     next();
     // });
 
-    // // serve static folder.
-    //  app.use('/public', express.static('public'));
-    // app.use('/uploads', express.static('uploads'));
-
 
     // initialize mongodb 
     await require('./db_mongo')();
-
-    // initalize routes.
-    // await routeUtils.route(app, routes);
 
      /* -- database migration
     */
