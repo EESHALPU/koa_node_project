@@ -18,11 +18,12 @@ userController.checkServer = async (ctx) => {
 };
 
 
-userController.createUser = async(payload) => {
-    console.log('PAYLOAD DATA IS COMING FROM ROUTES=>',payload);
+userController.createUser = async(ctx) => {
+    console.log('PAYLOAD DATA IS COMING FROM ROUTES=>',ctx.request.body);
+    let data = ctx.request.body
     // return createSuccessResponse('en',MESSAGES.USER_REGISTERED_SUCCESSFULLY)
-   let res= { "message":MESSAGES.USER_REGISTERED_SUCCESSFULLY, "status":200}
-    payload.body =res
+   let res= { "message":MESSAGES.USER_REGISTERED_SUCCESSFULLY, "status":200 , data}
+    ctx.body =res
 }
 
 
