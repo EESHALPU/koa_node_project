@@ -6,6 +6,8 @@ let modelService = {};
 * function to create.
 */
 modelService.create = async (model, payload) => {
+    console.log('MODEL:', model, 'PAYLOAD:',payload)
+    return payload
     return await new model(payload).save();
 };
 

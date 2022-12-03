@@ -42,20 +42,20 @@ commonFunctions.decryptJwt = (token) => {
 /***************************************
  **** Logger for error and success *****
  ***************************************/
-//  commonFunctions.log = {
-//   info: (data) => {
-//     console.log('\x1b[33m' + data, '\x1b[0m');
-//   },
-//   success: (data) => {
-//     console.log('\x1b[32m' + data, '\x1b[0m');
-//   },
-//   error: (data) => {
-//     console.log('\x1b[31m' + data, '\x1b[0m');
-//   },
-//   default: (data) => {
-//     console.log(data, '\x1b[0m');
-//   }
-// };
+ commonFunctions.log = {
+  info: (data) => {
+    console.log('\x1b[33m' + data, '\x1b[0m');
+  },
+  success: (data) => {
+    console.log('\x1b[32m' + data, '\x1b[0m');
+  },
+  error: (data) => {
+    console.log('\x1b[31m' + data, '\x1b[0m');
+  },
+  default: (data) => {
+    console.log(data, '\x1b[0m');
+  }
+};
 
 
 module.exports = commonFunctions;

@@ -1,7 +1,13 @@
 'use strict';
 
-const CONSTANTS = require('../utils/constants');
+const {ERROR_TYPES} = require('../utils/constants');
 const MESSAGES = require('../utils/messages')
+const HELPERS = require("../helpers");
+const UserModel = require('../models/userModel')
+const dbService = require('../services/dbService')
+const sessionService = require('../services/sessionService')
+
+const { compareHash, encryptJwt,  decryptJwt, hashPassword } = require('../utils/utils');
 
 /**************************************************
  ***************** user controller ***************
@@ -18,12 +24,28 @@ userController.checkServer = async (ctx) => {
 };
 
 
-userController.createUser = async(ctx) => {
-    console.log('PAYLOAD DATA IS COMING FROM ROUTES=>',ctx.request.body);
-    let data = ctx.request.body
-    // return createSuccessResponse('en',MESSAGES.USER_REGISTERED_SUCCESSFULLY)
-   let res= { "message":MESSAGES.USER_REGISTERED_SUCCESSFULLY, "status":200 , data}
-    ctx.body =res
+userController.login = async(payload) => {
+    let criteria = {email:payload.email}
+    console.log('criteria',criteria)
+    let user = await dbService.findOne(UserModel,criteria)
+    if (user) {
+        // compare user's password.
+        if (compareHash(payload.password, user.password)) {
+          const dataForJwt = {
+            id: user._id,
+            date: Date.now()
+          };
+          delete user.password;
+          let token = await encryptJwt(dataForJwt);
+          let data = { userId: user._id, token: token, userType: user.userType, }
+          // create session for particular user
+          await sessionService.createSession(data);
+          return Object.assign(HELPERS.responseHelper.createSuccessResponse(MESSAGES.LOGGED_IN_SUCCESSFULLY),{ token, user });
+        }
+        throw HELPERS.responseHelper.createErrorResponse(MESSAGES.INVALID_PASSWORD, ERROR_TYPES.BAD_REQUEST);
+      }
+
+    // payload.body = Object.assign(HELPERS.responseHelper.createSuccessResponse(MESSAGES.USER_REGISTERED_SUCCESSFULLY),{data:data} )
 }
 
 

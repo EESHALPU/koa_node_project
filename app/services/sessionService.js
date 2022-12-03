@@ -1,72 +1,46 @@
-'use strict';
-
-const { SessionModel } = require('../models');
+const CONFIG = require('../../config');
+const { sessionModel } = require(`../models`);
 
 let sessionService = {};
 
 /**
-* function to create session.
-*/
-sessionService.create = async (payload) => {
-    return await new SessionModel(payload).save();
+ * function to update user's session in the database.
+ */
+sessionService.updateSession = async (criteria, dataToUpdate) => {
+    return await sessionModel.findOneAndUpdate(criteria, dataToUpdate, { new: true, upsert: true }).lean();
+};
+
+
+sessionService.createSession = async (dataToInsert) => {
+    return await sessionModel.insertMany([dataToInsert])
+};
+/**
+ * function to verify a user's session.
+ */
+sessionService.verifySession = async (userId, userToken) => {
+    let userSession = await sessionModel.findOne({ userId, userToken }).lean();
+    if (userSession) {
+        return true;
+    }
+    return false;
 };
 
 /**
-* function to insert sessions.
-*/
-sessionService.insertMany = async (payload) => {
-    return await SessionModel.insertMany(payload);
+ * function to fetch user's session.
+ */
+sessionService.getSession = async (criteria) => {
+    return await sessionModel.findOne(criteria).populate('userId').lean();
 };
 
 /**
-* function to find sessions.
-*/
-sessionService.find = async (criteria, projection = {}) => {
-    return await SessionModel.find(criteria, projection).lean();
+ * function to remove session of a user when user is deleted from system.
+ */
+sessionService.removeSession = async (criteria) => {
+    return await sessionModel.deleteOne(criteria);
 };
 
-/**
-* function to find one session.
-*/
-sessionService.findOne = async (criteria, projection = {}) => {
-    return await SessionModel.findOne(criteria, projection).lean();
-};
-
-/**
-* function to update one session.
-*/
-sessionService.findOneAndUpdate = async (criteria, dataToUpdate, projection = {}) => {
-    return await SessionModel.findOneAndUpdate(criteria, dataToUpdate, projection).lean();
-};
-
-/**
-* function to update sessions.
-*/
-sessionService.updateMany = async (criteria, dataToUpdate, projection = {}) => {
-    return await SessionModel.updateMany(criteria, dataToUpdate, projection).lean();
-};
-
-/**
-* function to delete one session.
-*/
-sessionService.deleteOne = async (criteria) => {
-    return await SessionModel.deleteOne(criteria);
-};
-
-/**
-* function to delete sessions.
-*/
-sessionService.deleteMany = async (criteria) => {
-    return await SessionModel.deleteMany(criteria);
-};
-
-/**
-* function to apply aggregate on sessionModel.
-*/
-sessionService.aggregate = async (query) => {
-    return await SessionModel.aggregate(query);
-};
-
-module.exports = sessionService;
+sessionService.removeAllSession = async (criteria) => {
+    return await sessionModel.deleteMany(criteria);
+}
 
 module.exports = sessionService;

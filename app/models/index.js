@@ -6,5 +6,6 @@
  ********************************/
 module.exports = {
     userModel: require('./userModel'),
-    dbVersionModel: require('./dbVersionModel')
+    dbVersionModel: require('./dbVersionModel'),
+    sessionModel: require('./sessionModel')
 };
