@@ -9,8 +9,9 @@ const KoaBodyParser = require('koa-bodyparser');
 const koaHelmet = require('koa-helmet')
 const KoaResponseTime = require('koa-response-time')
 const allRoutes = require('../routes/index')
+const koaStatic = require('koa-static');
 // const KoaLogger = require('koa-logger')
-    
+   
 module.exports = async function (app) {    
     app.use(json())
     app.use(KoaBodyParser())
@@ -19,6 +20,11 @@ module.exports = async function (app) {
     app.use(koaHelmet())
     app.use(allRoutes.routes())
     app.use(allRoutes.allowedMethods())
+    app.use(koaStatic('./public'));
+
+    app.use( async ctx =>{
+        ctx.redirect('index.html')
+    })
 
     // initialize mongodb 
     await require('./db_mongo')();
